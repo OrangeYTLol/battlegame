@@ -115,23 +115,13 @@ def loadEnemies():
     enemies = [virus, malware, trojan, wannacry]
     
 def validate(string, cap):
-    if string != "":
-        if len(string) != 1:
-            for char in string:
-                if char.isdigit():
-                    string = char
-                    break
-            if len(string) != 1:
-                return validate(input("Invalid option, try again:\n"), cap)
-        if string[0].isdigit():
-            num = int(string)
-            if num - 1 in cap:
-                return num
-            else:
-                return validate(input("Invalid option, try again:\n"), cap)
-        else:
-            return validate(input("Invalid option, try again:\n"), cap)
-    return validate(input("Invalid option, try again:\n"), cap)
+    try:
+        if not int(string)-1 in cap:
+            raise IndexError
+    except :
+        return validate(input("Invalid option, try again:\n"), cap)
+    else:
+        return int(string)
 
 def showStats(entity, stat):
     match stat:
