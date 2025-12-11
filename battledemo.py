@@ -201,7 +201,6 @@ while True:
     pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-    """
     match validate(input("Select an action:\n1) Battle\n2) Check stats\n3) End\n"), range(3)):
         case 1:
             loadEnemies()
@@ -218,4 +217,3 @@ while True:
             if input("Are you sure? (y/n): ").lower().strip() == "y":
                 time.sleep(DELAY)
                 break
-    """
