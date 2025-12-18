@@ -1,4 +1,5 @@
-import pygame
+import pygame.image
+import pygame.key
 
 class player:
     def __init__(self, battle):
@@ -17,11 +18,13 @@ class player:
             raise Exception("Failed to load player sprites")
         self.image = self.down1
         self.rect = self.image.get_rect()
+        self.rect.height *= 4
+        self.rect.width *= 4
         #self.rect.mid = self.screen_rect.mid
         self.direction = "down"
         self.spriteCounter = 0
         self.spriteNum = 1
-        self.spriteTime = 7
+        self.spriteTime = 3
     
     def updateSprite(self):
         keys = pygame.key.get_pressed()
