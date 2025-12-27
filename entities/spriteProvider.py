@@ -7,4 +7,4 @@ class SpriteProvider:
         return sprites
     
     def loadSheet(self, sheet):
-        self.sheet = pygame.image.load("../assets/sprites/" + sheet + ".png")
+        self.sheet = pygame.image.load("./assets/sprites/" + sheet + ".png")

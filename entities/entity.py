@@ -1,5 +1,5 @@
 import pygame
-from spriteProvider import SpriteProvider
+from entities.spriteProvider import SpriteProvider
 
 class Entity:
     def __init__(self, screen):
