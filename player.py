@@ -5,21 +5,32 @@ class player:
     def __init__(self, battle):
         self.screen = battle.screen
         self.screen_rect = battle.screen.get_rect()
-        sp = SpriteProvider("player/spritesheet")
+        sp = SpriteProvider()
         try:
+            sp.loadSheet("player/spritesheet")
             self.down = sp.getSprites([(0, 16, 16, 16), (17, 16, 16, 16)])
+            self.down[0] = self.__scaleImage(self.down[0])
+            self.down[1] = self.__scaleImage(self.down[1])
             self.left = sp.getSprites([(34, 16, 16, 16), (51, 16, 16, 16)])
+            self.left[0] = self.__scaleImage(self.left[0])
+            self.left[1] = self.__scaleImage(self.left[1])
             self.right = sp.getSprites([(68, 16, 16, 16), (85, 16, 16, 16)])
+            self.right[0] = self.__scaleImage(self.right[0])
+            self.right[1] = self.__scaleImage(self.right[1])
             self.up = sp.getSprites([(102, 16, 16, 16), (119, 16, 16, 16)])
+            self.up[0] = self.__scaleImage(self.up[0])
+            self.up[1] = self.__scaleImage(self.up[1])
         except:
             raise Exception("Failed to load player sprites")
         self.image = self.down[0]
-        self.rect = self.image.get_rect()
-        #self.rect.mid = self.screen_rect.mid
         self.direction = "down"
         self.spriteCounter = 0
         self.spriteNum = 1
         self.spriteTime = 3
+    
+    def __scaleImage(self, image):
+        SCALE = 4
+        return pygame.transform.scale(image, (image.get_rect().width * SCALE, image.get_rect().height * SCALE))
     
     def updateSprite(self):
         keys = pygame.key.get_pressed()
@@ -40,7 +51,7 @@ class player:
                 elif self.spriteNum == 2:
                     self.spriteNum = 1
                 self.spriteCounter = 0
-                
+
         self.drawSprite()
         
     def drawSprite(self):
