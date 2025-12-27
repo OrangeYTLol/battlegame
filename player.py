@@ -1,25 +1,20 @@
-import pygame.image
 import pygame.key
+from spriteProvider import SpriteProvider
 
 class player:
     def __init__(self, battle):
         self.screen = battle.screen
         self.screen_rect = battle.screen.get_rect()
+        sp = SpriteProvider("player/spritesheet")
         try:
-            self.up1 = pygame.image.load("./sprites/player/up1.png")
-            self.up2 = pygame.image.load("./sprites/player/up2.png")
-            self.left1 = pygame.image.load("./sprites/player/left1.png")
-            self.left2 = pygame.image.load("./sprites/player/left2.png")
-            self.down1 = pygame.image.load("./sprites/player/down1.png")
-            self.down2 = pygame.image.load("./sprites/player/down2.png")
-            self.right1 = pygame.image.load("./sprites/player/right1.png")
-            self.right2 = pygame.image.load("./sprites/player/right2.png")
+            self.down = sp.getSprites([(0, 16, 16, 16), (17, 16, 16, 16)])
+            self.left = sp.getSprites([(34, 16, 16, 16), (51, 16, 16, 16)])
+            self.right = sp.getSprites([(68, 16, 16, 16), (85, 16, 16, 16)])
+            self.up = sp.getSprites([(102, 16, 16, 16), (119, 16, 16, 16)])
         except:
             raise Exception("Failed to load player sprites")
-        self.image = self.down1
+        self.image = self.down[0]
         self.rect = self.image.get_rect()
-        self.rect.height *= 4
-        self.rect.width *= 4
         #self.rect.mid = self.screen_rect.mid
         self.direction = "down"
         self.spriteCounter = 0
@@ -45,9 +40,11 @@ class player:
                 elif self.spriteNum == 2:
                     self.spriteNum = 1
                 self.spriteCounter = 0
+                
         self.drawSprite()
         
     def drawSprite(self):
-        self.image = eval("self."+str(self.direction)+str(self.spriteNum))
+        self.image = eval("self."+self.direction+str([self.spriteNum-1]))
+        self.rect = self.image.get_rect()
         self.screen.blit(self.image, self.rect)
         
