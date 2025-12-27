@@ -1,36 +1,31 @@
-import pygame.key
-from spriteProvider import SpriteProvider
+import pygame
+from entity import Entity
 
-class player:
-    def __init__(self, battle):
-        self.screen = battle.screen
-        self.screen_rect = battle.screen.get_rect()
-        sp = SpriteProvider()
+class player(Entity):
+    def __init__(self, screen):
+        Entity.__init__(self, screen)
         try:
-            sp.loadSheet("player/spritesheet")
-            self.down = sp.getSprites([(0, 16, 16, 16), (17, 16, 16, 16)])
-            self.down[0] = self.__scaleImage(self.down[0])
-            self.down[1] = self.__scaleImage(self.down[1])
-            self.left = sp.getSprites([(34, 16, 16, 16), (51, 16, 16, 16)])
-            self.left[0] = self.__scaleImage(self.left[0])
-            self.left[1] = self.__scaleImage(self.left[1])
-            self.right = sp.getSprites([(68, 16, 16, 16), (85, 16, 16, 16)])
-            self.right[0] = self.__scaleImage(self.right[0])
-            self.right[1] = self.__scaleImage(self.right[1])
-            self.up = sp.getSprites([(102, 16, 16, 16), (119, 16, 16, 16)])
-            self.up[0] = self.__scaleImage(self.up[0])
-            self.up[1] = self.__scaleImage(self.up[1])
+            self.sp.loadSheet("player/spritesheet")
+            self.down = self.sp.getSprites([(0, 16, 16, 16), (17, 16, 16, 16)])
+            self.down[0] = self.scaleImage(self.down[0])
+            self.down[1] = self.scaleImage(self.down[1])
+            self.left = self.sp.getSprites([(34, 16, 16, 16), (51, 16, 16, 16)])
+            self.left[0] = self.scaleImage(self.left[0])
+            self.left[1] = self.scaleImage(self.left[1])
+            self.right = self.sp.getSprites([(68, 16, 16, 16), (85, 16, 16, 16)])
+            self.right[0] = self.scaleImage(self.right[0])
+            self.right[1] = self.scaleImage(self.right[1])
+            self.up = self.sp.getSprites([(102, 16, 16, 16), (119, 16, 16, 16)])
+            self.up[0] = self.scaleImage(self.up[0])
+            self.up[1] = self.scaleImage(self.up[1])
         except:
             raise Exception("Failed to load player sprites")
         self.image = self.down[0]
+        self.rect.x, self.rect.y = (self.screen.width//2) - (self.image.get_rect().width//2), (self.screen.height//2) - (self.image.get_rect().height//2)
         self.direction = "down"
         self.spriteCounter = 0
         self.spriteNum = 1
-        self.spriteTime = 3
-    
-    def __scaleImage(self, image):
-        SCALE = 4
-        return pygame.transform.scale(image, (image.get_rect().width * SCALE, image.get_rect().height * SCALE))
+        self.spriteTime = 7
     
     def updateSprite(self):
         keys = pygame.key.get_pressed()
@@ -52,10 +47,16 @@ class player:
                     self.spriteNum = 1
                 self.spriteCounter = 0
 
+        self.updatePos()
         self.drawSprite()
+        
+    def updatePos(self):
+        if self.upPressed: self.rect.y -= self.SPEED
+        if self.leftPressed: self.rect.x -= self.SPEED
+        if self.downPressed: self.rect.y += self.SPEED
+        if self.rightPressed: self.rect.x += self.SPEED
         
     def drawSprite(self):
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
-        self.rect = self.image.get_rect()
-        self.screen.blit(self.image, self.rect)
+        self.screen.screen.blit(self.image, self.rect)
         

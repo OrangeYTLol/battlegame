@@ -1,4 +1,4 @@
-from battle import battle
+from battle import Battle
 
-game = battle()
+game = Battle()
 game.run()
