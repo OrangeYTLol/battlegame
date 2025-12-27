@@ -1,5 +1,5 @@
 import sys, pygame
-from player import player
+from entities.player import player
 class Battle:
     def __init__(self):
         global FPS, BLK, player1
