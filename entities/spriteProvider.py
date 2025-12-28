@@ -8,3 +8,7 @@ class SpriteProvider:
     
     def loadSheet(self, sheet):
         self.sheet = pygame.image.load("./assets/sprites/" + sheet + ".png")
+        
+    def scaleImage(self, image):
+        SCALE = 5
+        return pygame.transform.scale(image, (image.get_rect().width * SCALE, image.get_rect().height * SCALE))
