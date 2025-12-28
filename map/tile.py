@@ -2,6 +2,7 @@ from entities.spriteProvider import SpriteProvider
 
 class Tile:
     def __init__(self, tileID):
+        #tileID: "id;index;layer" EX. "t1;1;1"
         self.tileset = tileID[:2]
         self.tileNum = int(tileID[3])
         self.layer = tileID[5]
