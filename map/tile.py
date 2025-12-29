@@ -10,19 +10,9 @@ class Tile:
         self.spriteNum = 1
     
     def getSprites(self):
-        tiles = {
-            "b1": {
-                1: ("tiles/b1", [(0, 0, 16, 16)])
-            },
-            "t1": {
-                1: ("tiles/b1", [(17, 0, 16, 16)])
-            }
-        }
+        tiles = eval(open("./assets/maps/tile.keys").read())
         tile = tiles[self.tileset][self.tileNum][1]
         sheet = tiles[self.tileset][self.tileNum][0]
         
         self.sp.loadSheet(sheet)
         return self.sp.getSprites(tile)
-        
-        
-        

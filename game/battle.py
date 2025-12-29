@@ -6,23 +6,27 @@ class Battle:
     def __init__(self):
         global FPS, BLK
         pygame.init()
-        self.width = 1280
-        self.height = 720
+        self.tm = TileManager(self)
+        SCALE = 5
+        self.width = self.tm.columns * 16 * SCALE
+        self.height = self.tm.rows * 16 * SCALE
         self.window = pygame.display.set_mode((self.width, self.height))
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption("Battle")
         self.player1 = player(self)
         FPS = 30
         BLK = (0, 0, 0)
-        self.tm = TileManager(self)
         
     def run(self):
+        #font = pygame.font.Font(None, 18) 
+        clock = pygame.time.Clock()
         while True:
-            self.clock = pygame.time.Clock()
-            self.clock.tick(FPS)
+            
+            clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
             self.window.fill(BLK)
             self.tm.drawMap()
             self.player1.updateSprite()
+            #self.screen.blit(font.render(f"{clock.get_fps():2.0f} FPS" , True, (255, 255, 255)), (10, 10)) 
             pygame.display.flip()

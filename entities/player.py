@@ -59,4 +59,3 @@ class player(Entity):
     def drawSprite(self):
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
         self.screen.screen.blit(self.image, self.rect)
-        

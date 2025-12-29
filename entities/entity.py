@@ -5,5 +5,5 @@ class Entity:
     def __init__(self, screen):
         self.screen = screen
         self.sp = SpriteProvider()
-        self.SPEED = 5
+        self.SPEED = 10
         self.rect = pygame.Rect(0, 0, 16, 16)
