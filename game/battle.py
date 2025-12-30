@@ -26,5 +26,5 @@ class Battle:
             self.window.fill(BLK)
             self.tm.drawMap()
             self.player1.updateSprite()
-            self.screen.blit(pygame.font.Font(None, 18).render(f"{clock.get_fps():2.0f} FPS" , True, (255, 255, 255)), (10, 10)) #on-screen FPS counter
+            #self.screen.blit(pygame.font.Font(None, 18).render(f"{clock.get_fps():2.0f} FPS" , True, (255, 255, 255)), (10, 10)) #on-screen FPS counter
             pygame.display.flip()
