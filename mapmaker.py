@@ -35,7 +35,7 @@ def editMap(map):
                                 tile["col"] = validate(input("Enter the tile's column: "), range(12))
                                 tile["row"] = validate(input("Enter the tile's row: "), range(8))
                             else:
-                                tile["col"] = 0
+                                tile["col"] = 1
                                 tile["row"] = eval(map[-1])["row"] + 1
                         else:
                             tile["col"] = eval(map[-1])["col"] + 1
@@ -76,7 +76,7 @@ def editMap(map):
                                 tile["col"] = validate(input("Enter the new tile's column: "), range(12))
                                 tile["row"] = validate(input("Enter the new tile's row: "), range(8))
                             else:
-                                tile["col"] = 0
+                                tile["col"] = 1
                                 tile["row"] = eval(map[-1])["row"] + 1
                         else:
                             tile["col"] = eval(map[-1])["col"] + 1

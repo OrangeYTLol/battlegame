@@ -1,18 +1,21 @@
 from entities.spriteProvider import SpriteProvider
 
 class Tile:
-    def __init__(self, tileID):
-        #tileID: "id;index;layer" EX. "t1;1;1"
-        self.tileset = tileID[:2]
-        self.tileNum = int(tileID[3])
-        self.layer = tileID[5]
+    def __init__(self, attributes):
+        #Tile format: {"col": int, "row": int, tileID: str, "tileIndex": int, "layer": int, "flags": list}
+        self.col = attributes["col"] - 1
+        self.row = attributes["row"] - 1
+        self.tileID = attributes["tileID"]
+        self.tileIndex = attributes["tileIndex"]
+        self.layer = attributes["layer"]
+        self.flags = attributes["flags"]
         self.sp = SpriteProvider()
         self.spriteNum = 1
     
     def getSprites(self):
         tiles = eval(open("./assets/maps/tile.keys").read())
-        tile = tiles[self.tileset][self.tileNum][1]
-        sheet = tiles[self.tileset][self.tileNum][0]
+        tile = tiles[self.tileID][self.tileIndex][1]
+        sheet = tiles[self.tileID][self.tileIndex][0]
         
         self.sp.loadSheet(sheet)
         return self.sp.getSprites(tile)
