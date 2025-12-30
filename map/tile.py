@@ -11,7 +11,19 @@ class Tile:
         self.flags = attributes["flags"]
         self.sp = SpriteProvider()
         self.spriteNum = 1
+        self.spriteTime = 8
+        self.spriteCounter = 1
     
+    def updateSprite(self):
+        spriteCount = len(self.sprites)
+        self.spriteCounter += 1
+        if self.spriteCounter > self.spriteTime:
+            if self.spriteNum < spriteCount:
+                self.spriteNum += 1
+            else:
+                self.spriteNum = 1
+            self.spriteCounter = 1
+
     def getSprites(self):
         tiles = eval(open("./assets/maps/tile.keys").read())
         tile = tiles[self.tileID][self.tileIndex][1]

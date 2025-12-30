@@ -17,6 +17,7 @@ class TileManager:
     
     def drawMap(self):
         for tile in self.map:
+            tile.updateSprite()
             image = tile.sprites[tile.spriteNum-1]
             rect = image.get_rect()
             rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
