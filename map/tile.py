@@ -18,4 +18,4 @@ class Tile:
         sheet = tiles[self.tileID][self.tileIndex][0]
         
         self.sp.loadSheet(sheet)
-        return self.sp.getSprites(tile)
+        self.sprites = self.sp.getSprites(tile)

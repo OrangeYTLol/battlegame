@@ -18,15 +18,13 @@ class Battle:
         BLK = (0, 0, 0)
         
     def run(self):
-        #font = pygame.font.Font(None, 18) 
         clock = pygame.time.Clock()
         while True:
-            
             clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
             self.window.fill(BLK)
             self.tm.drawMap()
             self.player1.updateSprite()
-            #self.screen.blit(font.render(f"{clock.get_fps():2.0f} FPS" , True, (255, 255, 255)), (10, 10)) 
+            self.screen.blit(pygame.font.Font(None, 18).render(f"{clock.get_fps():2.0f} FPS" , True, (255, 255, 255)), (10, 10)) #on-screen FPS counter
             pygame.display.flip()
