@@ -4,6 +4,7 @@ from entities.entity import Entity
 class player(Entity):
     def __init__(self, screen):
         Entity.__init__(self, screen)
+        #Attempt to load player sprites
         try:
             self.sp.loadSheet("player/spritesheet")
             self.down = self.sp.getSprites([(0, 16, 16, 16), (17, 16, 16, 16)])
@@ -20,24 +21,29 @@ class player(Entity):
             self.up[1] = self.sp.scaleImage(self.up[1])
         except:
             raise Exception("Failed to load player sprites")
-        self.image = self.down[0]
+
+        self.image = self.down[0] #Default sprite
+        #Set default coordinates to middle of the screen
         self.rect.x, self.rect.y = (self.screen.width//2) - (self.image.get_rect().width//2), (self.screen.height//2) - (self.image.get_rect().height//2)
-        self.direction = "down"
-        self.spriteCounter = 0
-        self.spriteNum = 1
-        self.spriteTime = 7
+        self.direction = "down" #Default direction
+        self.spriteCounter = 0 #Time since last sprite change
+        self.spriteNum = 1 #Sprite index
+        self.spriteTime = 7 #Time between sprite changes
     
     def updateSprite(self):
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed() #List of booleans that represent keys pressed
+        #Booleans for directional keys
         self.upPressed = bool(keys[pygame.K_w] or keys[pygame.K_UP])
         self.leftPressed = bool(keys[pygame.K_a] or keys[pygame.K_LEFT])
         self.downPressed = bool(keys[pygame.K_s] or keys[pygame.K_DOWN])
         self.rightPressed = bool(keys[pygame.K_d] or keys[pygame.K_RIGHT])
+        #Set self.direction based on keys pressed
         if self.upPressed: self.direction = "up"
         if self.leftPressed: self.direction = "left"
         if self.downPressed: self.direction = "down"
         if self.rightPressed: self.direction = "right"
         
+        #Increment spriteCounter if a direction key is pressed
         if (self.upPressed or self.leftPressed or self.downPressed or self.rightPressed):
             self.spriteCounter += 1
             if self.spriteCounter > self.spriteTime:
@@ -47,15 +53,18 @@ class player(Entity):
                     self.spriteNum = 1
                 self.spriteCounter = 0
 
+        #Move and draw player
         self.updatePos()
         self.drawSprite()
         
     def updatePos(self):
+        #Move player based on speed constant
         if self.upPressed: self.rect.y -= self.SPEED
         if self.leftPressed: self.rect.x -= self.SPEED
         if self.downPressed: self.rect.y += self.SPEED
         if self.rightPressed: self.rect.x += self.SPEED
         
     def drawSprite(self):
+        #Draw image based on direction and sprite index
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
         self.screen.screen.blit(self.image, self.rect)
