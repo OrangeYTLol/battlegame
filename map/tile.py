@@ -9,6 +9,7 @@ class Tile:
         self.tileID = attributes["tileID"]
         self.tileIndex = attributes["tileIndex"]
         self.layer = attributes["layer"]
+        self.hasCollision = attributes["collision"]
         self.flags = attributes["flags"]
         self.sp = SpriteProvider()
         self.spriteNum = 1 #Sprite index
