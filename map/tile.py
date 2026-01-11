@@ -3,12 +3,11 @@ from entities.spriteProvider import SpriteProvider
 class Tile:
     def __init__(self, attributes):
         #Declare attributes based on dictionary constructor
-        #Tile format: {"col": int, "row": int, tileID: str, "tileIndex": int, "layer": int, "flags": list}
+        #Tile format: {"col": int, "row": int, tileID: str, "tileIndex": int, "collision": bool, "flags": list}
         self.col = attributes["col"] - 1
         self.row = attributes["row"] - 1
         self.tileID = attributes["tileID"]
         self.tileIndex = attributes["tileIndex"]
-        self.layer = attributes["layer"]
         self.hasCollision = attributes["collision"]
         self.flags = attributes["flags"]
         self.sp = SpriteProvider()

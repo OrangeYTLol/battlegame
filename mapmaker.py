@@ -3,7 +3,6 @@ import sys
 #Constants
 COLUMNS = 12
 ROWS = 8
-LAYERS = 3
 
 #Function to clean numeric user input
 def validate(string, cap):
@@ -66,7 +65,6 @@ def appendTile():
         tile["row"] = validate(input("Enter the tile's row: "), range(8))
     tile["tileID"] = input("Enter the tile's ID: ")
     tile["tileIndex"] = validate(input("Enter the tile's index: "), range(9))
-    tile["layer"] = validate(input("Enter the tile's layer: "), range(LAYERS))
     tile["collision"] = True if input("Does this tile have collision?(y/n): ") == "y" else False
     tile["flags"] = []
     for i in range(validate(input("Enter the amount of flags you want to add: "), range(-1, 9))):
@@ -121,7 +119,7 @@ def editTile():
         while True:
             print(tile)
             print("")
-            match validate(input("Select an action:\n1) Change column/row\n2) Change tile ID\n3) Change tile index\n4) Change layer\n5) Change flags\n6) Edit collision\n7) Finish\n"), range(7)):
+            match validate(input("Select an action:\n1) Change column/row\n2) Change tile ID\n3) Change tile index\n4) Edit collision\n5) Change flags\n6) Finish\n"), range(6)):
                 case 1:
                     tile["col"] = validate(input("Enter the tile's new column: "), range(12))
                     tile["row"] = validate(input("Enter the tile's new row: "), range(8))
@@ -130,7 +128,7 @@ def editTile():
                 case 3:
                     tile["tileIndex"] = validate(input("Enter the tile's new index: "), range(9))
                 case 4:
-                    tile["layer"] = validate(input("Enter the tile's new layer: "), range(LAYERS))
+                    tile["collision"] = True if input("Does this tile have collision?(y/n): ") == "y" else False
                 case 5:
                     match validate(input("Select an action:\n1) Append flag\n2) Edit flag\n3) Remove flag\n4) Back\n"), range(4)):
                         case 1:
@@ -141,8 +139,6 @@ def editTile():
                             del tile["flags"][validate(input("Which flag will you remove?: "), range(len(tile["flags"])))-1]
                         case _:
                             pass
-                case 6:
-                    tile["collision"] = True if input("Does this tile have collision?(y/n): ") == "y" else False
                 case _:
                     break
         print("Applying changes...")

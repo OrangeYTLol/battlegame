@@ -10,10 +10,10 @@ class Battle:
         pygame.init()
         #Create a TileManager object for map loading & drawing
         self.tm = TileManager(self)
-        SCALE = 5
+        self.SCALE = 5
         #Create screen and window
-        self.width = self.tm.columns * 16 * SCALE
-        self.height = self.tm.rows * 16 * SCALE
+        self.width = self.tm.columns * 16 * self.SCALE
+        self.height = self.tm.rows * 16 * self.SCALE
         self.window = pygame.display.set_mode((self.width, self.height))
         self.screen = pygame.display.get_surface()
         pygame.display.set_caption("Battle")
