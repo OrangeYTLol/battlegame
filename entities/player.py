@@ -23,7 +23,7 @@ class player(Entity):
             raise Exception("Failed to load player sprites")
 
         self.image = self.down[0] #Default sprite
-        self.hitbox = (-8, 16, 16, 16)
+        self.hitbox = (8*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE)
         #Set default coordinates to middle of the screen
         self.rect.x, self.rect.y = (self.screen.width//2) - (self.image.get_rect().width//2), (self.screen.height//2) - (self.image.get_rect().height//2)
         self.direction = "down" #Default direction
@@ -41,16 +41,16 @@ class player(Entity):
         self.collided = False
         #Set self.direction based on keys pressed
         if self.upPressed: 
-            if bool(self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0])) or self.checkCollision((self.rect.x+16, self.rect.y+self.hitbox[0]))): self.collided = True
+            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0])): self.collided = True
             self.direction = "up"
         if self.leftPressed: 
-            if bool(self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0])) or self.checkCollision((self.rect.x, self.rect.y+self.hitbox[1]))): self.collided = True
+            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]), (self.rect.x, self.rect.y+self.hitbox[1])): self.collided = True
             self.direction = "left"
         if self.downPressed: 
-            if bool(self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2])) or self.checkCollision((self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]))): self.collided = True
+            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2])): self.collided = True
             self.direction = "down"
         if self.rightPressed: 
-            if bool(self.checkCollision((self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0])) or self.checkCollision((self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]))): self.collided = True
+            if self.checkCollision((self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2])): self.collided = True
             self.direction = "right"
         #Increment spriteCounter if a direction key is pressed
         if (self.upPressed or self.leftPressed or self.downPressed or self.rightPressed) and not self.collided:
