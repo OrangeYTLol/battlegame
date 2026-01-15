@@ -41,16 +41,16 @@ class player(Entity):
         self.collided = False
         #Set self.direction based on keys pressed
         if self.upPressed: 
-            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0])): self.collided = True
+            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]-self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]-self.SPEED)): self.collided = True
             self.direction = "up"
         if self.leftPressed: 
-            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]), (self.rect.x, self.rect.y+self.hitbox[1])): self.collided = True
+            if self.checkCollision((self.rect.x-self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x-self.SPEED, self.rect.y+self.hitbox[1])): self.collided = True
             self.direction = "left"
         if self.downPressed: 
-            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2])): self.collided = True
+            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]+self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]+self.SPEED)): self.collided = True
             self.direction = "down"
         if self.rightPressed: 
-            if self.checkCollision((self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2])): self.collided = True
+            if self.checkCollision((self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[2])): self.collided = True
             self.direction = "right"
         #Increment spriteCounter if a direction key is pressed
         if (self.upPressed or self.leftPressed or self.downPressed or self.rightPressed) and not self.collided:
