@@ -4,12 +4,16 @@ class Tile:
     def __init__(self, attributes):
         #Declare attributes based on dictionary constructor
         #Tile format: {"col": int, "row": int, tileID: str, "tileIndex": int, "collision": bool, "flags": list}
-        self.col = attributes["col"] - 1
-        self.row = attributes["row"] - 1
-        self.tileID = attributes["tileID"]
-        self.tileIndex = attributes["tileIndex"]
-        self.hasCollision = attributes["collision"]
-        self.flags = attributes["flags"]
+        try:
+            self.col = attributes["col"] - 1
+            self.row = attributes["row"] - 1
+            self.tileID = attributes["tileID"]
+            self.tileIndex = attributes["tileIndex"]
+            self.hasCollision = attributes["collision"]
+            self.levelTrans = attributes["levelTrans"]
+            self.flags = attributes["flags"]
+        except:
+            print("Warning: Tile is missing attributes")
         self.sp = SpriteProvider()
         self.spriteNum = 1 #Sprite index
         self.spriteTime = 8 #Time between sprite changes
