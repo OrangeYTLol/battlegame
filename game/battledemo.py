@@ -1,3 +1,5 @@
+# This file is an early concept for the battle system
+
 import random
 import time
 
