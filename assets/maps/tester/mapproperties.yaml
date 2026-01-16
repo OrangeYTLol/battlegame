@@ -4,4 +4,4 @@ xOffset: 0
 yOffset: 0
 tileKeys: true
 tileSize: 16
-entities: ["entity1"]
+entities: []

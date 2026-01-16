@@ -1,4 +1,4 @@
-import sys
+import sys, os, yaml
 
 #Constants
 COLUMNS = 12
@@ -156,14 +156,27 @@ while True:
             except:
                 print("Editing failed, map file is likely corrupted")
         case 2:
-            map = input("Enter a name for the file: ")
+            map = input("Enter a name for the map: ")
             try:
-                open(f"./assets/maps/{map}.map", "x")
+                os.makedirs(f"./assets/maps/{map}", exist_ok=False)
+                open(f"./assets/maps/{map}/mapproperties.yaml", "x")
+                open(f"./assets/maps/{map}/tiles.txt", "x")
+                properties = {}
+                properties["columns"] = validate(input("How many columns will the map have?: "), range(999))
+                properties["rows"] = validate(input("How many rows will the map have?: "), range(999))
+                properties["xOffset"] = 0
+                properties["yOffset"] = 0
+                properties["tileKeys"] = True
+                properties["tileSize"] = 16
+                properties["entities"] = []
+                with open(f"./assets/maps/{map}/mapproperties.yaml", "w") as file:
+                    yaml.dump(properties, file, sort_keys=False)
             except:
-                print("That name is invalid or a map with that name already exists!")
+                print("An error occurred while creating map!")
             else:
                 try:
-                    editMap()
+                    print("mapedit")
+                    #editMap()
                 except:
                     print("Editing failed, map file is likely corrupted")
         case _:
