@@ -17,26 +17,35 @@ def validate(string, cap):
 #Main editing function
 def editMap():
     global name, map
-    print("Editing " + map + ".map...")
     name = map
+    print("Editing ./assets/maps/" + name + "/...")
     while True:
-        map = open("./assets/maps/"+name+".map").read().split("\n")
-        print(f"\n{name}.map:")
-        if map[0] == '':
-            print(None)
-            del map[0]
-        for i in range(len(map)):
-            print(f"{i+1}: {eval(map[i])}")
-        print("")
-        match validate(input("Select an action:\n1) Append tile\n2) Remove tile\n3) Duplicate tile\n4) Edit tile\n5) Exit\n"), range(5)):
+        match validate(input("Select an action:\n1) Edit map properties\n2) Edit tiles\n3) Exit\n"), range(3)):
             case 1:
-                appendTile()
+                map = open("./assets/maps/"+name+"/mapproperties.yaml").read()
+                properties = yaml.safe_load(map)
+                print(f"\n{name}/mapproperties.yaml: \n{map}")
             case 2:
-                removeTile()
-            case 3:
-                dupeTile()
-            case 4:
-                editTile()
+                while True:
+                    map = open("./assets/maps/"+name+"/tiles.txt").read().split("\n")
+                    print(f"\nassets/maps/{name}/tiles.txt:")
+                    if map[0] == '':
+                        print(None)
+                        del map[0]
+                    for i in range(len(map)):
+                        print(f"{i+1}: {eval(map[i])}")
+                    print("")
+                    match validate(input("Select an action:\n1) Append tile\n2) Remove tile\n3) Duplicate tile\n4) Edit tile\n5) Exit\n"), range(5)):
+                        case 1:
+                            appendTile()
+                        case 2:
+                            removeTile()
+                        case 3:
+                            dupeTile()
+                        case 4:
+                            editTile()
+                        case _:
+                            break
             case _:
                 print("Closing map...")
                 return
@@ -70,7 +79,7 @@ def appendTile():
     for i in range(validate(input("Enter the amount of flags you want to add: "), range(-1, 9))):
         tile["flags"].append(validate(input(f"Enter flag {i+1}: "), range(-1, 999)))
     map.append(str(tile))
-    open("./assets/maps/"+name+".map", "w").write("\n".join(map))
+    open("./assets/maps/"+name+"/tiles.txt", "w").write("\n".join(map))
     print("Appended", str(tile))
 
 #Function for removing a tile from the map
@@ -80,7 +89,7 @@ def removeTile():
             del map[int(input("Which tile do you want to remove: "))-1]
         except:
             print("Invalid tile")
-        open("./assets/maps/"+name+".map", "w").write("\n".join(map))
+        open("./assets/maps/"+name+"/tiles.txt", "w").write("\n".join(map))
     else:
         print("There are no tiles to remove!")
 
@@ -103,7 +112,7 @@ def dupeTile():
                 tile["col"] = eval(map[-1])["col"] + 1
                 tile["row"] = eval(map[-1])["row"]
             map.append(str(tile))
-            open("./assets/maps/"+name+".map", "w").write("\n".join(map))
+            open("./assets/maps/"+name+"/tiles.txt", "w").write("\n".join(map))
     else:
         print("There are no tiles to duplicate!")
 
@@ -143,7 +152,7 @@ def editTile():
                     break
         print("Applying changes...")
         map[tileI] = str(tile)
-        open("./assets/maps/"+name+".map", "w").write("\n".join(map))
+        open("./assets/maps/"+name+"/tiles.txt", "w").write("\n".join(map))
             
 
 #Main loop
@@ -175,8 +184,7 @@ while True:
                 print("An error occurred while creating map!")
             else:
                 try:
-                    print("mapedit")
-                    #editMap()
+                    editMap()
                 except:
                     print("Editing failed, map file is likely corrupted")
         case _:
