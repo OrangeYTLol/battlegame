@@ -22,9 +22,35 @@ def editMap():
     while True:
         match validate(input("Select an action:\n1) Edit map properties\n2) Edit tiles\n3) Exit\n"), range(3)):
             case 1:
-                map = open("./assets/maps/"+name+"/mapproperties.yaml").read()
-                properties = yaml.safe_load(map)
-                print(f"\n{name}/mapproperties.yaml: \n{map}")
+                while True:
+                    map = open("./assets/maps/"+name+"/mapproperties.yaml")
+                    properties = yaml.safe_load(map)
+                    attributes = {"columns": int, "rows": int, "xOffset": int, "yOffset": int, "tilekeys": bool, "tileSize": int, "entities": list}
+                    print(f"\n{name}/mapproperties.yaml: \n{properties}")
+                    match validate(input("Select an action:\n1) Edit/Add attribute\n2) Remove attribute\n3) Exit\n"), range(3)):
+                        case 1:
+                            attribute = input("Which attribute do you want to edit?: ")
+                            if attribute in attributes.keys():
+                                value = eval(input("What do you want to set this attribute to?: "))
+                                try:
+                                    if type(value) == attributes[attribute]:
+                                        properties[attribute] = value
+                                        yaml.dump(properties, map, sort_keys=False)
+                                    else:
+                                        raise Exception
+                                except:
+                                    print("Invalid attribute type.")
+                            else:
+                                print("That attribute does not exist!")
+                        case 2:
+                            attribute = input("Which attribute would you like to remove?: ")
+                            if attribute in attributes.keys() and not attribute in ["columns", "rows"]:
+                                del attributes[attribute]
+                                yaml.dump(properties, map, sort_keys=False)
+                            else:
+                                print("Attribute does not exist or could not be removed.")
+                        case _:
+                            break
             case 2:
                 while True:
                     map = open("./assets/maps/"+name+"/tiles.txt").read().split("\n")
@@ -154,7 +180,6 @@ def editTile():
         map[tileI] = str(tile)
         open("./assets/maps/"+name+"/tiles.txt", "w").write("\n".join(map))
             
-
 #Main loop
 while True:
     match validate(input("Select an action:\n1) Edit Map\n2) Create map\n3) Exit\n"), range(3)):

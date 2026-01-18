@@ -13,7 +13,7 @@ class Tile:
             self.levelTrans = attributes["levelTrans"]
             self.flags = attributes["flags"]
         except:
-            print("Warning: Tile is missing attributes")
+            print(f"WARNING: Tile at {(self.col+1, self.row+1)} is missing attributes")
         self.sp = SpriteProvider()
         self.spriteNum = 1 #Sprite index
         self.spriteTime = 8 #Time between sprite changes
