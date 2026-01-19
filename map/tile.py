@@ -2,22 +2,27 @@ from entities.spriteProvider import SpriteProvider
 
 class Tile:
     def __init__(self, attributes):
+        self.sp = SpriteProvider()
+        self.spriteNum = 1 #Sprite index
+        self.spriteTime = 8 #Time between sprite changes
+        self.spriteCounter = 1 #Time since last sprite change
+        self.hasCollision = False
         #Declare attributes based on dictionary constructor
-        #Tile format: {"col": int, "row": int, tileID: str, "tileIndex": int, "collision": bool, "flags": list}
+        {"col": int, "row": int, "tileID": str, "tileIndex": int, "collision": bool, "changeLevelTo": str, "existsWhen": list} #Constructor format
         try:
             self.col = attributes["col"] - 1
             self.row = attributes["row"] - 1
             self.tileID = attributes["tileID"]
             self.tileIndex = attributes["tileIndex"]
-            self.hasCollision = attributes["collision"]
-            self.levelTrans = attributes["levelTrans"]
-            self.flags = attributes["flags"]
+            self.collision = attributes["collision"]
         except:
-            print(f"WARNING: Tile at {(self.col+1, self.row+1)} is missing attributes")
-        self.sp = SpriteProvider()
-        self.spriteNum = 1 #Sprite index
-        self.spriteTime = 8 #Time between sprite changes
-        self.spriteCounter = 1 #Time since last sprite change
+            raise AttributeError
+        try: self.changeLevelTrigger = attributes["changeLevelTo"] 
+        except: pass
+        try: self.existsWhenFlags = attributes["existsWhen"]
+        except: pass
+        try: self.hasCollision = self.collision
+        except: raise AttributeError
     
     def updateSprite(self):
         spriteCount = len(self.sprites) #Get amount of sprites
@@ -31,9 +36,9 @@ class Tile:
                 self.spriteNum = 1
             self.spriteCounter = 1
 
-    def getSprites(self):
+    def getSprites(self, keys = "./assets/maps/tile.keys"):
         #Open tile keys as a dictionary to get tile image constructors and spritesheet
-        tiles = eval(open("./assets/maps/tile.keys").read())
+        tiles = eval(open(keys).read())
         tile = tiles[self.tileID][self.tileIndex][1]
         sheet = tiles[self.tileID][self.tileIndex][0]
         

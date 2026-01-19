@@ -2,6 +2,6 @@ columns: 12
 rows: 8
 xOffset: 0
 yOffset: 0
-tileKeys: true
+tileKeys: false
 tileSize: 16
 entities: ["entity1"]

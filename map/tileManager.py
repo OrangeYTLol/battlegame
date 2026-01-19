@@ -1,4 +1,5 @@
 from map.tile import Tile
+import yaml
 
 class TileManager:
     def __init__(self, screen):
@@ -12,18 +13,18 @@ class TileManager:
     
     def loadMap(self, map):
         #Split the map file into a list by line
-        tiles = open("./assets/maps/" + map + ".map").read().split("\n")
+        tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n")
+        properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r"))
         self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)]
         #Loop through the tiles in map
         for i in range(len(tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object
             tiles[i] = Tile(eval(tiles[i]))
-            tiles[i].getSprites()
+            tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
             #Scale each sprite
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
-        del tiles
     
     def drawMap(self):
         #Loop through tiles in map

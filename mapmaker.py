@@ -23,9 +23,9 @@ def editMap():
         match validate(input("Select an action:\n1) Edit map properties\n2) Edit tiles\n3) Exit\n"), range(3)):
             case 1:
                 while True:
-                    map = open("./assets/maps/"+name+"/mapproperties.yaml")
-                    properties = yaml.safe_load(map)
-                    attributes = {"columns": int, "rows": int, "xOffset": int, "yOffset": int, "tilekeys": bool, "tileSize": int, "entities": list}
+                    map = "./assets/maps/"+name+"/mapproperties.yaml"
+                    properties = yaml.safe_load(open(map, "r"))
+                    attributes = {"columns": int, "rows": int, "xOffset": int, "yOffset": int, "tileKeys": bool, "tileSize": int, "entities": list}
                     print(f"\n{name}/mapproperties.yaml: \n{properties}")
                     match validate(input("Select an action:\n1) Edit/Add attribute\n2) Remove attribute\n3) Exit\n"), range(3)):
                         case 1:
@@ -35,18 +35,18 @@ def editMap():
                                 try:
                                     if type(value) == attributes[attribute]:
                                         properties[attribute] = value
-                                        yaml.dump(properties, map, sort_keys=False)
+                                        yaml.dump(properties, open(map, "w"), sort_keys=False)
                                     else:
-                                        raise Exception
+                                        raise TypeError
                                 except:
                                     print("Invalid attribute type.")
                             else:
                                 print("That attribute does not exist!")
                         case 2:
                             attribute = input("Which attribute would you like to remove?: ")
-                            if attribute in attributes.keys() and not attribute in ["columns", "rows"]:
-                                del attributes[attribute]
-                                yaml.dump(properties, map, sort_keys=False)
+                            if attribute in properties.keys() and not attribute in ["columns", "rows"]:
+                                del properties[attribute]
+                                yaml.dump(properties, open(map, "w"), sort_keys=False)
                             else:
                                 print("Attribute does not exist or could not be removed.")
                         case _:
