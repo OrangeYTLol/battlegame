@@ -6,10 +6,12 @@ class Entity:
         self.screen = screen #Define screen for drawing
         self.sp = SpriteProvider()
         self.SPEED = 10 #Speed constant
+        self.pos = pygame.math.Vector2()
+        self.velocity = pygame.math.Vector2()
         self.rect = pygame.Rect(0, 0, 16, 16) #Coordinates and hitbox size
     
-    def checkCollision(self, pos1, pos2=None):
-        pygame.draw.line(self.screen.screen, (0, 0, 0), pos1, pos2)
+    def checkCollision(self, vector):
+        pygame.draw.line(self.screen.screen, (0, 0, 0), pos1, pos2) #draw black line at positions being checked for debugging
         pos1 = ((pos1[0] // (16 * self.screen.SCALE))-1, (pos1[1] // (16 * self.screen.SCALE))-1)
         for tile in self.screen.tm.map[pos1[0]][pos1[1]]:
             if tile.hasCollision:

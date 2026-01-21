@@ -20,12 +20,14 @@ class player(Entity):
             self.up[0] = self.sp.scaleImage(self.up[0])
             self.up[1] = self.sp.scaleImage(self.up[1])
         except:
-            raise Exception("Failed to load player sprites")
+            raise Exception("ImageError: Failed to load player sprites")
 
         self.image = self.down[0] #Default sprite
         self.hitbox = (8*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE)
         #Set default coordinates to middle of the screen
-        self.rect.x, self.rect.y = (self.screen.width//2) - (self.image.get_rect().width//2), (self.screen.height//2) - (self.image.get_rect().height//2)
+        self.pos.x, self.pos.y = (self.screen.width//2) - (self.image.get_rect().width//2), (self.screen.height//2) - (self.image.get_rect().height//2)
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
         self.direction = "down" #Default direction
         self.spriteCounter = 0 #Time since last sprite change
         self.spriteNum = 1 #Sprite index
@@ -42,15 +44,19 @@ class player(Entity):
         #Set self.direction based on keys pressed
         if self.upPressed: 
             if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]-self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]-self.SPEED)): self.collided = True
+            self.velocity.y -= 1
             self.direction = "up"
         if self.leftPressed: 
             if self.checkCollision((self.rect.x-self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x-self.SPEED, self.rect.y+self.hitbox[1])): self.collided = True
+            self.velocity.x -= 1
             self.direction = "left"
         if self.downPressed: 
             if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]+self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]+self.SPEED)): self.collided = True
+            self.velocity.y += 1
             self.direction = "down"
         if self.rightPressed: 
             if self.checkCollision((self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[2])): self.collided = True
+            self.velocity.x += 1
             self.direction = "right"
         #Increment spriteCounter if a direction key is pressed
         if (self.upPressed or self.leftPressed or self.downPressed or self.rightPressed) and not self.collided:
@@ -67,12 +73,10 @@ class player(Entity):
         self.drawSprite()
         
     def updatePos(self):
-        #Move player based on speed constant
-        if self.upPressed and not self.collided: self.rect.y -= self.SPEED
-        if self.leftPressed and not self.collided: self.rect.x -= self.SPEED
-        if self.downPressed and not self.collided: self.rect.y += self.SPEED
-        if self.rightPressed and not self.collided: self.rect.x += self.SPEED
-        
+        self.pos.x += self.velocity.x * self.SPEED
+        self.pos.y += self.velocity.y * self.SPEED
+        self.rect.x, self.rect.y = self.pos.x, self.pos.y
+
     def drawSprite(self):
         #Draw image based on direction and sprite index
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
