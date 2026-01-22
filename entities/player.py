@@ -43,20 +43,20 @@ class player(Entity):
         self.collided = False
         #Set self.direction based on keys pressed
         if self.upPressed: 
-            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]-self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]-self.SPEED)): self.collided = True
-            self.velocity.y -= 1
+            if not self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]-self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]-self.SPEED)): 
+                self.velocity.y -= 1
             self.direction = "up"
         if self.leftPressed: 
-            if self.checkCollision((self.rect.x-self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x-self.SPEED, self.rect.y+self.hitbox[1])): self.collided = True
-            self.velocity.x -= 1
+            if not self.checkCollision((self.rect.x-self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x-self.SPEED, self.rect.y+self.hitbox[1])):
+                self.velocity.x -= 1
             self.direction = "left"
         if self.downPressed: 
-            if self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]+self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]+self.SPEED)): self.collided = True
-            self.velocity.y += 1
+            if not self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]+self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]+self.SPEED)): 
+                self.velocity.y += 1
             self.direction = "down"
         if self.rightPressed: 
-            if self.checkCollision((self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[2])): self.collided = True
-            self.velocity.x += 1
+            if not self.checkCollision((self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[2])):
+                self.velocity.x += 1
             self.direction = "right"
         #Increment spriteCounter if a direction key is pressed
         if (self.upPressed or self.leftPressed or self.downPressed or self.rightPressed) and not self.collided:
@@ -76,6 +76,7 @@ class player(Entity):
         self.pos.x += self.velocity.x * self.SPEED
         self.pos.y += self.velocity.y * self.SPEED
         self.rect.x, self.rect.y = self.pos.x, self.pos.y
+        self.velocity.x, self.velocity.y = 0, 0
 
     def drawSprite(self):
         #Draw image based on direction and sprite index
