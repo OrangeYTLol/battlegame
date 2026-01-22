@@ -15,13 +15,14 @@ class TileManager:
         #Split the map file into a list by line
         tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n")
         properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r"))
+        #Using a nested list comprehension to create an empty map (2D array data structure)
         self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)]
         #Loop through the tiles in map
         for i in range(len(tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object
             tiles[i] = Tile(eval(tiles[i]))
             tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
-            #Scale each sprite
+            #Scale each sprite (removing this gives a downsized version of the map, but their collisions remained scale)
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
