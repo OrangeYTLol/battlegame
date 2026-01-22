@@ -28,7 +28,7 @@ class TileManager:
             #Use the dictionary as a constructor for a tile object and load the images into the object
             tiles[i] = Tile(eval(tiles[i]))
             tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
-            #Scale each sprite
+            #Scale each sprite (removing this gives a downsized version of the map, but their collisions remained scale)
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])

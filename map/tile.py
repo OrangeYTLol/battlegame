@@ -1,6 +1,9 @@
 from entities.spriteProvider import SpriteProvider
 
 class Tile:
+    """
+    A Tile created from a .txt file containing a list of attributes with predetermined values
+    """
     def __init__(self, attributes):
         self.sp = SpriteProvider()
         self.spriteNum = 1 #Sprite index
@@ -38,9 +41,15 @@ class Tile:
             self.spriteCounter = 1
 
     def getSprites(self, keys = "./assets/maps/tile.keys"):
+        """
+        Gets info for sprite image using the "titleID" and "titleIndex" attributes from a .txt file.\n
+        The attributes' unique values then map to other values from a different .txt that holds a dictionary.\n
+        This process is what specifies a given sprite and their spritesheet.
+        """
         #Open tile keys as a dictionary to get tile image constructors and spritesheet
         tiles = eval(open(keys).read())
         tile = tiles[self.tileID][self.tileIndex][1]
+        #Get the file name of the spritesheet
         sheet = tiles[self.tileID][self.tileIndex][0]
         
         #Load spritesheet into spriteProvider and sprites into self.sprites
