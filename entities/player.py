@@ -21,7 +21,6 @@ class player(Entity):
             self.up[1] = self.sp.scaleImage(self.up[1])
         except:
             raise Exception("ImageError: Failed to load player sprites")
-
         self.image = self.down[0] #Default sprite
         self.hitbox = (8*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE)
         #Set default coordinates to middle of the screen
@@ -77,6 +76,7 @@ class player(Entity):
         self.pos.y += self.velocity.y * self.SPEED
         self.rect.x, self.rect.y = self.pos.x, self.pos.y
         self.velocity.x, self.velocity.y = 0, 0
+        #self.screen.tm.player_group.remove()
 
     def drawSprite(self):
         #Draw image based on direction and sprite index

@@ -1,5 +1,5 @@
 from map.tile import Tile
-import yaml
+import yaml, pygame
 
 class TileManager:
     def __init__(self, screen):
@@ -8,14 +8,21 @@ class TileManager:
         #Amount of rows and columns on the screen
         self.rows = 8
         self.columns = 12
+        #Define tile collision, entity collision, and player collision
+        self.collision_group = pygame.sprite.Group()
+        self.entity_group = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
         #Load a default map
         self.loadMap("start")
     
     def loadMap(self, map):
-        #Split the map file into a list by line
-        tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n")
-        properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r"))
-        self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)]
+        """
+        Loads a map into memory
+        """
+        #Load map files
+        tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
+        properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r")) #Load map properties
+        self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)] #Create list where the tiles will get sorted into
         #Loop through the tiles in map
         for i in range(len(tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object

@@ -7,6 +7,7 @@ class Tile:
         self.spriteTime = 8 #Time between sprite changes
         self.spriteCounter = 1 #Time since last sprite change
         self.hasCollision = False
+        self.sprites = [] #List of sprites the tile will use that gets set when self.getSprites is run
         #Declare attributes based on dictionary constructor
         {"col": int, "row": int, "tileID": str, "tileIndex": int, "collision": bool, "changeLevelTo": str, "existsWhen": list} #Constructor format
         try:
