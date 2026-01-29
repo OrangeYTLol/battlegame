@@ -1,4 +1,5 @@
 from entities.spriteProvider import SpriteProvider
+import pygame
 
 class Tile:
     """
@@ -41,6 +42,7 @@ class Tile:
                 self.spriteNum = 1
             self.spriteCounter = 1
         #TODO: update the mask for when sprite is changed
+        self.mask = pygame.mask.from_surface(self.sprites[self.spriteNum - 1]) #Update the mask as the sprite itself gets updated
         
 
     def getSprites(self, keys = "./assets/maps/tile.keys"):
