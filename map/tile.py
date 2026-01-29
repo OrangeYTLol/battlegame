@@ -11,6 +11,7 @@ class Tile:
         self.spriteCounter = 1 #Time since last sprite change
         self.hasCollision = False
         self.sprites = [] #List of sprites the tile will use that gets set when self.getSprites is run
+        self.mask = None #Will get a value once its sprite is loaded
         #Declare attributes based on dictionary constructor
         {"col": int, "row": int, "tileID": str, "tileIndex": int, "collision": bool, "changeLevelTo": str, "existsWhen": list} #Constructor format
         try:
@@ -39,6 +40,8 @@ class Tile:
             else:
                 self.spriteNum = 1
             self.spriteCounter = 1
+        #TODO: update the mask for when sprite is changed
+        
 
     def getSprites(self, keys = "./assets/maps/tile.keys"):
         """
