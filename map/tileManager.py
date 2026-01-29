@@ -9,9 +9,7 @@ class TileManager:
         self.rows = 8
         self.columns = 12
         #Define tile collision, entity collision, and player collision
-        self.collision_group = pygame.sprite.Group()
-        self.entity_group = pygame.sprite.Group()
-        self.player_group = pygame.sprite.Group()
+        self.collision_group = []
         #Load a default map
         self.loadMap("start")
     

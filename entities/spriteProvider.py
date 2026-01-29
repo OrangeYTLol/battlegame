@@ -1,6 +1,8 @@
 import pygame
 
 class SpriteProvider:
+    def __init__(self):
+        self.SCALE = 5
     #Takes in a list with pygame.Rect constructors as args
     #Will return the list with the Rect constructors converted to Rect objects
     def getSprites(self, sprites):
@@ -14,5 +16,5 @@ class SpriteProvider:
         
     #Return a scaled image multiplied to the scale constant
     def scaleImage(self, image):
-        SCALE = 5
-        return pygame.transform.scale(image, (image.get_rect().width * SCALE, image.get_rect().height * SCALE))
+        self.SCALE = 5
+        return pygame.transform.scale(image, (image.get_rect().width * self.SCALE, image.get_rect().height * self.SCALE))
