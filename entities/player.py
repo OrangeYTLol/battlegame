@@ -31,6 +31,8 @@ class player(Entity):
         self.spriteCounter = 0 #Time since last sprite change
         self.spriteNum = 1 #Sprite index
         self.spriteTime = 7 #Time between sprite changes
+        self.mask = pygame.mask.from_surface(self.image) #Mask for player
+    
     
     def updateSprite(self):
         keys = pygame.key.get_pressed() #List of booleans that represent keys pressed
@@ -81,4 +83,5 @@ class player(Entity):
     def drawSprite(self):
         #Draw image based on direction and sprite index
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
+        self.mask = pygame.mask.from_surface(self.image) #Update the mask as the sprite itself gets updated
         self.screen.screen.blit(self.image, self.rect)
