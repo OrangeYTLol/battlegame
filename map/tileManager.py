@@ -32,6 +32,12 @@ class TileManager:
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
+        
+        
+        #Tile needs a mask if it can be collidable
+        if tiles[i].hasCollision:
+            tiles[i].mask = pygame.mask.from_surface(tiles[i].sprites[tiles[i].spriteNum - 1])
+            
     
     def drawMap(self):
         #Loop through tiles in map
