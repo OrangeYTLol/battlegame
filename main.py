@@ -1,5 +1,5 @@
 """
-TO DO:
+TODO:
 Comment code
 Add collision detection
 Add level transition triggers

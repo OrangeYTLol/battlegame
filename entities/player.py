@@ -44,23 +44,23 @@ class player(Entity):
         self.collided = False
         #Set self.direction based on keys pressed
         if self.upPressed: 
-            if not self.checkCollision((self.rect.x, self.rect.y+self.hitbox[0]-self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[0]-self.SPEED)): 
-                self.velocity.y -= 1
+            self.velocity.y -= 1
+            if not self.checkCollision(pygame.Rect(self.pos.x, self.pos.y + self.velocity.y)): pass
             self.direction = "up"
         if self.leftPressed: 
-            if not self.checkCollision((self.rect.x-self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x-self.SPEED, self.rect.y+self.hitbox[1])):
-                self.velocity.x -= 1
+            self.velocity.x -= 1
+            if not self.checkCollision(self.rect): pass
             self.direction = "left"
         if self.downPressed: 
-            if not self.checkCollision((self.rect.x, self.rect.y+self.hitbox[2]+self.SPEED), (self.rect.x+self.hitbox[1], self.rect.y+self.hitbox[2]+self.SPEED)): 
-                self.velocity.y += 1
+            self.velocity.y += 1
+            if not self.checkCollision(self.rect): pass
             self.direction = "down"
         if self.rightPressed: 
-            if not self.checkCollision((self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[0]), (self.rect.x+self.hitbox[1]+self.SPEED, self.rect.y+self.hitbox[2])):
-                self.velocity.x += 1
+            self.velocity.x += 1
+            if not self.checkCollision(self.rect): pass
             self.direction = "right"
         #Increment spriteCounter if a direction key is pressed
-        if (self.upPressed or self.leftPressed or self.downPressed or self.rightPressed) and not self.collided:
+        if self.upPressed or self.leftPressed or self.downPressed or self.rightPressed:
             self.spriteCounter += 1
             if self.spriteCounter > self.spriteTime:
                 if self.spriteNum == 1:
@@ -78,7 +78,6 @@ class player(Entity):
         self.pos.y += self.velocity.y * self.SPEED
         self.rect.x, self.rect.y = self.pos.x, self.pos.y
         self.velocity.x, self.velocity.y = 0, 0
-        #self.screen.tm.player_group.remove()
 
     def drawSprite(self):
         #Draw image based on direction and sprite index

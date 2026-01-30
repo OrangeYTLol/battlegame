@@ -1,5 +1,5 @@
 from map.tile import Tile
-import yaml, pygame
+import yaml
 
 class TileManager:
     def __init__(self, screen):
@@ -25,19 +25,18 @@ class TileManager:
         for i in range(len(tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object
             tiles[i] = Tile(eval(tiles[i]))
+            if tiles[i].hasCollision:
+                self.collision_group.append(tiles[i].rect)
             tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
             #Scale each sprite (removing this gives a downsized version of the map, but their collisions remained scale)
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
-        
-        
-        #Tile needs a mask if it can be collidable
-        if tiles[i].hasCollision:
-            tiles[i].mask = pygame.mask.from_surface(tiles[i].sprites[tiles[i].spriteNum - 1])
-            
     
     def drawMap(self):
+        """
+        Draws a map onto the screen
+        """
         #Loop through tiles in map
         for i in range(self.columns):
             for j in range(self.rows):

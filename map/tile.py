@@ -22,7 +22,7 @@ class Tile:
             self.collision = attributes["collision"]
         except:
             raise AttributeError
-        self.rect = Rect(self.col * 16, self.row * 16, 16 * self.sp.SCALE)
+        self.rect = Rect(self.col * 16 * self.sp.SCALE, self.row * 16 * self.sp.SCALE, 16 * self.sp.SCALE, 16 * self.sp.SCALE)
         try: self.changeLevelTrigger = attributes["changeLevelTo"] 
         except: pass
         try: self.existsWhenFlags = attributes["existsWhen"]
@@ -40,13 +40,11 @@ class Tile:
                 self.spriteNum += 1
             else:
                 self.spriteNum = 1
-            self.spriteCounter = 1
-        #TODO: update the mask for when sprite is changed
-        
+            self.spriteCounter = 1  
 
     def getSprites(self, keys = "./assets/maps/tile.keys"):
         """
-        Gets info for sprite image using the "titleID" and "titleIndex" attributes from a .txt file.\n
+        Gets info for sprite image using the "titleID" and "titleIndex" attributes from a keys.txt file.\n
         The attributes' unique values then map to other values from a different .txt that holds a dictionary.\n
         This process is what specifies a given sprite and their spritesheet.
         """
