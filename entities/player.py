@@ -45,19 +45,15 @@ class player(Entity):
         #Set self.direction based on keys pressed
         if self.upPressed: 
             self.velocity.y -= 1
-            if not self.checkCollision(pygame.Rect(self.pos.x, self.pos.y + self.velocity.y)): pass
             self.direction = "up"
         if self.leftPressed: 
             self.velocity.x -= 1
-            if not self.checkCollision(self.rect): pass
             self.direction = "left"
         if self.downPressed: 
             self.velocity.y += 1
-            if not self.checkCollision(self.rect): pass
             self.direction = "down"
         if self.rightPressed: 
             self.velocity.x += 1
-            if not self.checkCollision(self.rect): pass
             self.direction = "right"
         #Increment spriteCounter if a direction key is pressed
         if self.upPressed or self.leftPressed or self.downPressed or self.rightPressed:
@@ -74,10 +70,12 @@ class player(Entity):
         self.drawSprite()
         
     def updatePos(self):
-        self.pos.x += self.velocity.x * self.SPEED
-        self.pos.y += self.velocity.y * self.SPEED
+        if not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED, self.rect.top, self.rect.width, self.rect.height)):
+            self.pos.x += self.velocity.x * self.SPEED
+        if not self.checkCollision(pygame.Rect(self.rect.left, self.rect.top + self.velocity.y * self.SPEED, self.rect.width, self.rect.height)):
+            self.pos.y += self.velocity.y * self.SPEED
         self.rect.x, self.rect.y = self.pos.x, self.pos.y
-        self.velocity.x, self.velocity.y = 0, 0
+        self.velocity.update(0, 0)
 
     def drawSprite(self):
         #Draw image based on direction and sprite index
