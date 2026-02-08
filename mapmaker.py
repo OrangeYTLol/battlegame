@@ -100,7 +100,7 @@ def appendTile():
         tile["row"] = validate(input("Enter the tile's row: "), range(8))
     tile["tileID"] = input("Enter the tile's ID: ")
     tile["tileIndex"] = validate(input("Enter the tile's index: "), range(9))
-    tile["collision"] = True if input("Does this tile have collision?(y/n): ") == "y" else False
+    tile["collision"] = input("Does this tile have collision?(y/n): ") == "y"
     tile["flags"] = []
     for i in range(validate(input("Enter the amount of flags you want to add: "), range(-1, 9))):
         tile["flags"].append(validate(input(f"Enter flag {i+1}: "), range(-1, 999)))

@@ -31,17 +31,14 @@ class player(Entity):
         self.spriteCounter = 0 #Time since last sprite change
         self.spriteNum = 1 #Sprite index
         self.spriteTime = 7 #Time between sprite changes
-        self.mask = pygame.mask.from_surface(self.image) #Mask for player
-    
     
     def updateSprite(self):
         keys = pygame.key.get_pressed() #List of booleans that represent keys pressed
         #Booleans for directional keys
-        self.upPressed = bool(keys[pygame.K_w] or keys[pygame.K_UP])
-        self.leftPressed = bool(keys[pygame.K_a] or keys[pygame.K_LEFT])
-        self.downPressed = bool(keys[pygame.K_s] or keys[pygame.K_DOWN])
-        self.rightPressed = bool(keys[pygame.K_d] or keys[pygame.K_RIGHT])
-        self.collided = False
+        self.upPressed = keys[pygame.K_w] or keys[pygame.K_UP]
+        self.leftPressed = keys[pygame.K_a] or keys[pygame.K_LEFT]
+        self.downPressed = keys[pygame.K_s] or keys[pygame.K_DOWN]
+        self.rightPressed = keys[pygame.K_d] or keys[pygame.K_RIGHT]
         #Set self.direction based on keys pressed
         if self.upPressed: 
             self.velocity.y -= 1
@@ -80,5 +77,4 @@ class player(Entity):
     def drawSprite(self):
         #Draw image based on direction and sprite index
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
-        self.mask = pygame.mask.from_surface(self.image) #Update the mask as the sprite itself gets updated
         self.screen.screen.blit(self.image, self.rect)
