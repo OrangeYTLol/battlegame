@@ -69,8 +69,12 @@ class player(Entity):
     def updatePos(self):
         if not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED, self.rect.top, self.rect.width, self.rect.height)):
             self.pos.x += self.velocity.x * self.SPEED
+        elif not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED * 0.5, self.rect.top, self.rect.width, self.rect.height)):
+            self.pos.x += self.velocity.x * self.SPEED * 0.5
         if not self.checkCollision(pygame.Rect(self.rect.left, self.rect.top + self.velocity.y * self.SPEED, self.rect.width, self.rect.height)):
             self.pos.y += self.velocity.y * self.SPEED
+        elif not self.checkCollision(pygame.Rect(self.rect.left, self.rect.top + self.velocity.y * self.SPEED * 0.5, self.rect.width, self.rect.height)):
+            self.pos.y += self.velocity.y * self.SPEED * 0.5
         self.rect.x, self.rect.y = self.pos.x, self.pos.y
         self.velocity.update(0, 0)
 
