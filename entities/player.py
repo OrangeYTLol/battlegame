@@ -67,6 +67,10 @@ class player(Entity):
         self.drawSprite()
         
     def updatePos(self):
+        """
+        Employs a prediction-based algorithm based on user input that determines if the block ahead is collidable.
+        If a tile has collision, stop the player from advancing to the block. Else, the player moves as intended.
+        """
         if not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED, self.rect.top, self.rect.width, self.rect.height)):
             self.pos.x += self.velocity.x * self.SPEED
         elif not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED * 0.5, self.rect.top, self.rect.width, self.rect.height)):
@@ -79,6 +83,9 @@ class player(Entity):
         self.velocity.update(0, 0)
 
     def drawSprite(self):
+        """
+        Draw an image based on direction and sprite index
+        """
         #Draw image based on direction and sprite index
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
         self.screen.screen.blit(self.image, self.rect)
