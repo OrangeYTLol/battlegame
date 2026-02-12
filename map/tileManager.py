@@ -1,5 +1,5 @@
 from map.tile import Tile
-import yaml
+import yaml, importlib, pygame
 
 class TileManager:
     def __init__(self, screen):
@@ -10,6 +10,8 @@ class TileManager:
         self.columns = 12
         #Define tile collision, entity collision, and player collision
         self.collision_group = []
+        self.map = []
+        self.entities = []
         #Load a default map
         self.loadMap("start")
     
@@ -32,6 +34,9 @@ class TileManager:
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
+        entities = importlib.import_module("assets.maps."+ map + ".mapentities")
+        for entity in properties["entities"]:
+            self.entities.append(eval(f"entities.{entity}({pygame.display.get_surface()})"))
     
     def drawMap(self):
         """
