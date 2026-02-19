@@ -22,6 +22,7 @@ class player(Entity):
         except:
             raise Exception("ImageError: Failed to load player sprites")
         self.image = self.down[0] #Default sprite
+        #Hitbox offsets
         self.hitbox = (8*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE, 16*screen.SCALE)
         #Set default coordinates to middle of the screen
         self.pos.x, self.pos.y = (self.screen.width//2) - (self.image.get_rect().width//2), (self.screen.height//2) - (self.image.get_rect().height//2)
@@ -39,7 +40,7 @@ class player(Entity):
         self.leftPressed = keys[pygame.K_a] or keys[pygame.K_LEFT]
         self.downPressed = keys[pygame.K_s] or keys[pygame.K_DOWN]
         self.rightPressed = keys[pygame.K_d] or keys[pygame.K_RIGHT]
-        #Set self.direction based on keys pressed
+        #Set self.direction and change velocity based on keys pressed
         if self.upPressed: 
             self.velocity.y -= 1
             self.direction = "up"
@@ -67,6 +68,9 @@ class player(Entity):
         self.drawSprite()
         
     def updatePos(self):
+        """
+        Change position based on velocity and speed
+        """
         if not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED, self.rect.top, self.rect.width, self.rect.height)):
             self.pos.x += self.velocity.x * self.SPEED
         elif not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED * 0.5, self.rect.top, self.rect.width, self.rect.height)):
@@ -75,8 +79,8 @@ class player(Entity):
             self.pos.y += self.velocity.y * self.SPEED
         elif not self.checkCollision(pygame.Rect(self.rect.left, self.rect.top + self.velocity.y * self.SPEED * 0.5, self.rect.width, self.rect.height)):
             self.pos.y += self.velocity.y * self.SPEED * 0.5
-        self.rect.x, self.rect.y = self.pos.x, self.pos.y
-        self.velocity.update(0, 0)
+        self.rect.x, self.rect.y = self.pos.x, self.pos.y #Update player rectangle x and y to new pos
+        self.velocity.update(0, 0) #Reset velocity
 
     def drawSprite(self):
         #Draw image based on direction and sprite index

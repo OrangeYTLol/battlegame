@@ -1,10 +1,9 @@
 """
 TODO:
 Comment code
-Add collision detection
-Add level transition triggers
+Load Entities to maps
 """
-from game.battle import Battle
+from game.battle import Battle #Custom for pygame window and display stuff
 
 game = Battle()
 #Run game loop

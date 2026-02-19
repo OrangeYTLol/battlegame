@@ -3,12 +3,12 @@ import yaml
 
 class TileManager:
     def __init__(self, screen):
-        #Screen object for attributes
+        #Screen object for drawing
         self.screen = screen
         #Amount of rows and columns on the screen
         self.rows = 8
         self.columns = 12
-        #Define tile collision, entity collision, and player collision
+        #Define a list for tiles with collision
         self.collision_group = []
         #Load a default map
         self.loadMap("start")
@@ -20,15 +20,16 @@ class TileManager:
         #Load map files
         tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
         properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r")) #Load map properties
-        self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)] #Create list where the tiles will get sorted into
-        #Loop through the tiles in map
+        self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)] #Create a 2D array for better tile organization
+        #Loop through the tiles in the map
         for i in range(len(tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object
             tiles[i] = Tile(eval(tiles[i]))
+            #Add tile to collision list if collision attribute is set to true
             if tiles[i].hasCollision:
                 self.collision_group.append(tiles[i].rect)
             tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
-            #Scale each sprite (removing this gives a downsized version of the map, but their collisions remained scale)
+            #Scale each sprite to the size of the screen
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])

@@ -31,6 +31,9 @@ class Tile:
         except: raise AttributeError
     
     def updateSprite(self):
+        """
+        increment spriteNum every {spriteTime} game ticks
+        """
         spriteCount = len(self.sprites) #Get amount of sprites
 
         #Increment spriteNum if spriteCounter is equal to spriteTime
@@ -45,10 +48,9 @@ class Tile:
     def getSprites(self, keys = "./assets/maps/tile.keys"):
         """
         Gets info for sprite image using the "titleID" and "titleIndex" attributes from a keys.txt file.\n
-        The attributes' unique values then map to other values from a different .txt that holds a dictionary.\n
         This process is what specifies a given sprite and their spritesheet.
         """
-        #Open tile keys as a dictionary to get tile image constructors and spritesheet
+        #Open tile keys as a dictionary to get tile image constructors and spritesheet name
         tiles = eval(open(keys).read())
         tile = tiles[self.tileID][self.tileIndex][1]
         #Get the file name of the spritesheet

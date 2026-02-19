@@ -2,7 +2,7 @@ import pygame
 
 class SpriteProvider:
     def __init__(self):
-        self.SCALE = 5
+        self.SCALE = 5 #Scale constant
     #Takes in a list with pygame.Rect constructors as args
     #Will return the list with the Rect constructors converted to Rect objects
     def getSprites(self, sprites):

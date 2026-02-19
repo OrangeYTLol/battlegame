@@ -10,7 +10,7 @@ class Battle:
         pygame.init()
         #Create a TileManager object for map loading & drawing
         self.tm = TileManager(self)
-        self.SCALE = 5
+        self.SCALE = 5 #Screen upscale amount
         #Create screen and window
         self.width = self.tm.columns * 16 * self.SCALE
         self.height = self.tm.rows * 16 * self.SCALE
