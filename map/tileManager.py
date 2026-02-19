@@ -37,7 +37,8 @@ class TileManager:
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
         entities = importlib.import_module("assets.maps."+ map + ".mapentities")
         for entity in properties["entities"]:
-            self.entities.append(eval(f"entities.{entity}({pygame.display.get_surface()})"))
+            entity = getattr(entities, entity)
+            self.entities.append(entity(self.screen))
     
     def drawMap(self):
         """
@@ -55,3 +56,5 @@ class TileManager:
                     rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
                     #Draw the image to the screen
                     self.screen.screen.blit(image, rect)
+        for entity in self.entities:
+            entity.drawSprite()
