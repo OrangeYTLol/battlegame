@@ -24,6 +24,9 @@ class Battle:
         BLK = (0, 0, 0)
         
     def run(self):
+        """
+        The main function responsible for game flow; checking if player quits and updating the map.
+        """
         #Define clock
         clock = pygame.time.Clock()
         while True:

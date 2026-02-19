@@ -69,7 +69,8 @@ class player(Entity):
         
     def updatePos(self):
         """
-        Change position based on velocity and speed
+        Employs a prediction-based algorithm based on user input that determines if the tile ahead is collidable.
+        If a tile has collision, stop the player from advancing to the tile. Else, the player moves as intended.
         """
         if not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED, self.rect.top, self.rect.width, self.rect.height)):
             self.pos.x += self.velocity.x * self.SPEED
@@ -83,6 +84,9 @@ class player(Entity):
         self.velocity.update(0, 0) #Reset velocity
 
     def drawSprite(self):
+        """
+        Draw an image based on direction and sprite index
+        """
         #Draw image based on direction and sprite index
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
         self.screen.screen.blit(self.image, self.rect)

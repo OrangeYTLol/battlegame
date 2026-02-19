@@ -16,5 +16,9 @@ class SpriteProvider:
         
     #Return a scaled image multiplied to the scale constant
     def scaleImage(self, image):
+        """
+        Takes an image and multiplies it using the scale constant
+        """
+        
         self.SCALE = 5
         return pygame.transform.scale(image, (image.get_rect().width * self.SCALE, image.get_rect().height * self.SCALE))
