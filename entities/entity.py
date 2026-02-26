@@ -24,3 +24,6 @@ class Entity:
         Draw self.image to the screen
         """
         self.screen.screen.blit(self.image, self.rect)
+    
+    def update(self):
+        self.drawSprite()

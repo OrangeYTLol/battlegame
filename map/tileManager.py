@@ -1,5 +1,5 @@
 from map.tile import Tile
-import yaml, importlib, pygame
+import yaml, importlib
 
 class TileManager:
     def __init__(self, screen):
@@ -23,6 +23,7 @@ class TileManager:
         tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
         properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r")) #Load map properties
         self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)] #Create a 2D array for better tile organization
+        self.collision_group = []
         #Loop through the tiles in the map
         for i in range(len(tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object
@@ -35,10 +36,12 @@ class TileManager:
             for j in range(len(tiles[i].sprites)):
                 tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
             self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
-        entities = importlib.import_module("assets.maps."+ map + ".mapentities")
-        for entity in properties["entities"]:
-            entity = getattr(entities, entity)
-            self.entities.append(entity(self.screen))
+        self.entities = []
+        if len(properties["entities"]):
+            entities = importlib.import_module("assets.maps."+ map + ".mapentities")
+            for entity in properties["entities"]:
+                entity = getattr(entities, entity)
+                self.entities.append(entity(self.screen))
     
     def drawMap(self):
         """
@@ -57,4 +60,4 @@ class TileManager:
                     #Draw the image to the screen
                     self.screen.screen.blit(image, rect)
         for entity in self.entities:
-            entity.drawSprite()
+            entity.update()
