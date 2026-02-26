@@ -22,7 +22,6 @@ class TileManager:
         #Load map files
         tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
         properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r")) #Load map properties
-        self.map = [[[] for _ in range(self.rows)] for _ in range(self.columns)] #Create a 2D array for better tile organization
         self.collision_group = []
         #Loop through the tiles in the map
         for i in range(len(tiles)):
@@ -32,10 +31,7 @@ class TileManager:
             if tiles[i].hasCollision:
                 self.collision_group.append(tiles[i].rect)
             tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
-            #Scale each sprite to the size of the screen
-            for j in range(len(tiles[i].sprites)):
-                tiles[i].sprites[j] = tiles[i].sp.scaleImage(tiles[i].sprites[j])
-            self.map[tiles[i].col-1][tiles[i].row-1].append(tiles[i])
+        self.map = tiles
         self.entities = []
         if len(properties["entities"]):
             entities = importlib.import_module("assets.maps."+ map + ".mapentities")
@@ -48,16 +44,14 @@ class TileManager:
         Draws a map onto the screen
         """
         #Loop through tiles in map
-        for i in range(self.columns):
-            for j in range(self.rows):
-                for tile in self.map[i][j]:
-                    tile.updateSprite() #Update tile's spriteCounter
-                    #Get current image
-                    image = tile.sprites[tile.spriteNum-1]
-                    rect = image.get_rect()
-                    #Get pixel coordinates (column/row * tileSize * SCALE)
-                    rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
-                    #Draw the image to the screen
-                    self.screen.screen.blit(image, rect)
+        for tile in self.map:
+            tile.updateSprite() #Update tile's spriteCounter
+            #Get current image
+            image = tile.sp.scaleImage(tile.sprites[tile.spriteNum-1])
+            rect = image.get_rect()
+            #Get pixel coordinates (column/row * tileSize * SCALE)
+            rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
+            #Draw the image to the screen
+            self.screen.screen.blit(image, rect)
         for entity in self.entities:
             entity.update()
