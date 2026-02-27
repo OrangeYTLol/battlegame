@@ -2,6 +2,7 @@ from entities.entity import Entity
 class Trigger(Entity):
     def __init__(self, screen):
         super().__init__(screen)
+        self.image = self.sp.getSprites([(0, 0, 1, 1)])[0]
     
     def whenCollided(self):
         pass
