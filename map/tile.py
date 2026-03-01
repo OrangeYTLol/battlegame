@@ -5,13 +5,12 @@ class Tile:
     """
     A Tile created from a .txt file containing a list of attributes with predetermined values
     """
-    def __init__(self, attributes):
+    def __init__(self, attributes: dict, keys: str = "./assets/maps/tile.keys"):
         self.sp = SpriteProvider()
         self.spriteNum = 1 #Sprite index
         self.spriteTime = 8 #Time between sprite changes
         self.spriteCounter = 1 #Time since last sprite change
         self.hasCollision = False
-        self.sprites = [] #List of sprites the tile will use that gets set when self.getSprites is run
         #Declare attributes based on dictionary constructor
         {"col": int, "row": int, "tileID": str, "tileIndex": int, "collision": bool, "changeLevelTo": str, "existsWhen": list} #Constructor format
         try:
@@ -29,6 +28,15 @@ class Tile:
         except: pass
         try: self.hasCollision = self.collision
         except: raise AttributeError
+        self.sprites = [] #List of sprites the tile will use that gets set when self.getSprites is run
+        #Open tile keys as a dictionary to get tile image constructors and spritesheet name
+        tiles = eval(open(keys).read())
+        tile = tiles[self.tileID][self.tileIndex][1]
+        #Get the file name of the spritesheet
+        sheet = tiles[self.tileID][self.tileIndex][0]
+        #Load spritesheet into spriteProvider and sprites into self.sprites
+        self.sp.loadSheet(sheet)
+        self.sprites = tile
     
     def updateSprite(self):
         """
@@ -45,17 +53,8 @@ class Tile:
                 self.spriteNum = 1
             self.spriteCounter = 1  
 
-    def getSprites(self, keys = "./assets/maps/tile.keys"):
+    def getSprites(self):
         """
-        Gets info for sprite image using the "titleID" and "titleIndex" attributes from a keys.txt file.\n
-        This process is what specifies a given sprite and their spritesheet.
+        Gets a list of image objects from a list of pygame.Rect object constructors
         """
-        #Open tile keys as a dictionary to get tile image constructors and spritesheet name
-        tiles = eval(open(keys).read())
-        tile = tiles[self.tileID][self.tileIndex][1]
-        #Get the file name of the spritesheet
-        sheet = tiles[self.tileID][self.tileIndex][0]
-        
-        #Load spritesheet into spriteProvider and sprites into self.sprites
-        self.sp.loadSheet(sheet)
-        self.sprites = self.sp.getSprites(tile)
+        return self.sp.getSprites(self.sprites)

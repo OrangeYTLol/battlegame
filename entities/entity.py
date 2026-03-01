@@ -13,7 +13,7 @@ class Entity:
         self.image = self.sp.scaleImage(self.sp.getSprites([(0, 16, 16, 16)])[0])
         self.rect = pygame.Rect(0, 0, 16 * self.sp.SCALE, 16 * self.sp.SCALE) #Coordinates and hitbox size
     
-    def checkCollision(self, rect):
+    def checkCollision(self, rect: pygame.Rect):
         """
         Return true if given rectangle collides with list of tiles with collision
         """

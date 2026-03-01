@@ -10,31 +10,29 @@ class TileManager:
         self.columns = 12
         #Define a list for tiles with collision
         self.collision_group = []
-        self.map = []
+        self.tiles = []
         self.entities = []
         #Load a default map
         self.loadMap("start")
     
-    def loadMap(self, map):
+    def loadMap(self, name: str):
         """
         Loads a map into memory
         """
         #Load map files
-        tiles = open("./assets/maps/" + map + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
-        properties = yaml.safe_load(open("./assets/maps/" + map + "/mapproperties.yaml", "r")) #Load map properties
+        self.tiles = open("./assets/maps/" + name + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
+        properties = yaml.safe_load(open("./assets/maps/" + name + "/mapproperties.yaml", "r")) #Load map properties
         self.collision_group = []
         #Loop through the tiles in the map
-        for i in range(len(tiles)):
+        for i in range(len(self.tiles)):
             #Use the dictionary as a constructor for a tile object and load the images into the object
-            tiles[i] = Tile(eval(tiles[i]))
+            self.tiles[i] = Tile(eval(self.tiles[i]), "./assets/maps/" + name + "/tile.keys") if properties["tileKeys"] else Tile(eval(self.tiles[i]))
             #Add tile to collision list if collision attribute is set to true
-            if tiles[i].hasCollision:
-                self.collision_group.append(tiles[i].rect)
-            tiles[i].getSprites("./assets/maps/" + map + "/tile.keys") if properties["tileKeys"] else tiles[i].getSprites()
-        self.map = tiles
+            if self.tiles[i].hasCollision:
+                self.collision_group.append(self.tiles[i].rect)
         self.entities = []
         if len(properties["entities"]):
-            entities = importlib.import_module("assets.maps."+ map + ".mapentities")
+            entities = importlib.import_module("assets.maps."+ name + ".mapentities")
             for entity in properties["entities"]:
                 entity = getattr(entities, entity)
                 self.entities.append(entity(self.screen))
@@ -44,10 +42,10 @@ class TileManager:
         Draws a map onto the screen
         """
         #Loop through tiles in map
-        for tile in self.map:
+        for tile in self.tiles:
             tile.updateSprite() #Update tile's spriteCounter
             #Get current image
-            image = tile.sp.scaleImage(tile.sprites[tile.spriteNum-1])
+            image = tile.sp.scaleImage(tile.getSprites()[tile.spriteNum-1])
             rect = image.get_rect()
             #Get pixel coordinates (column/row * tileSize * SCALE)
             rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
