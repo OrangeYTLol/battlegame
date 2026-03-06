@@ -1,5 +1,6 @@
 from map.tile import Tile
 import yaml, importlib
+from threading import Thread
 
 class TileManager:
     def __init__(self, screen):
@@ -12,28 +13,46 @@ class TileManager:
         self.collision_group = []
         self.tiles = []
         self.entities = []
-        #Load a default map
-        self.loadMap("start")
+        self.mapName = ""
+        self.mapProperties = {}
     
     def loadMap(self, name: str):
         """
         Loads a map into memory
         """
+        self.mapName = name
         #Load map files
-        self.tiles = open("./assets/maps/" + name + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
-        properties = yaml.safe_load(open("./assets/maps/" + name + "/mapproperties.yaml", "r")) #Load map properties
+        self.tiles = open("./assets/maps/" + self.mapName + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
+        self.mapProperties = yaml.safe_load(open("./assets/maps/" + self.mapName + "/mapproperties.yaml", "r")) #Load map properties
         self.collision_group = []
+        
+        tiles = Thread(target=self.loadTiles)
+        entities = Thread(target=self.loadEntities)
+        tiles.start() 
+        tiles.join()
+        entities.start()
+        entities.join()
+        
+    def createTile(self, i):
+        #Use the dictionary as a constructor for a tile object and load the images into the object
+        constructor = eval(self.tiles[i])
+        self.tiles[i] = Tile(constructor, "./assets/maps/" + self.mapName + "/tile.keys") if self.mapProperties["tileKeys"] else Tile(constructor)
+        #Add tile to collision list if collision attribute is set to true
+        if self.tiles[i].hasCollision:
+            self.collision_group.append(self.tiles[i].rect)
+    
+    def loadTiles(self):
         #Loop through the tiles in the map
+        tiles = []
         for i in range(len(self.tiles)):
-            #Use the dictionary as a constructor for a tile object and load the images into the object
-            self.tiles[i] = Tile(eval(self.tiles[i]), "./assets/maps/" + name + "/tile.keys") if properties["tileKeys"] else Tile(eval(self.tiles[i]))
-            #Add tile to collision list if collision attribute is set to true
-            if self.tiles[i].hasCollision:
-                self.collision_group.append(self.tiles[i].rect)
+            tiles.append(Thread(target=self.createTile, args=[i]))
+            tiles[i].start()
+        
+    def loadEntities(self):
         self.entities = []
-        if len(properties["entities"]):
-            entities = importlib.import_module("assets.maps."+ name + ".mapentities")
-            for entity in properties["entities"]:
+        if len(self.mapProperties["entities"]):
+            entities = importlib.import_module("assets.maps."+ self.mapName + ".mapentities")
+            for entity in self.mapProperties["entities"]:
                 entity = getattr(entities, entity)
                 self.entities.append(entity(self.screen))
     
@@ -43,13 +62,20 @@ class TileManager:
         """
         #Loop through tiles in map
         for tile in self.tiles:
-            tile.updateSprite() #Update tile's spriteCounter
-            #Get current image
-            image = tile.sp.scaleImage(tile.getSprites()[tile.spriteNum-1])
-            rect = image.get_rect()
-            #Get pixel coordinates (column/row * tileSize * SCALE)
-            rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
-            #Draw the image to the screen
-            self.screen.screen.blit(image, rect)
+            try:
+                tile.updateSprite() #Update tile's spriteCounter
+                #Get current image
+                image = tile.sp.scaleImage(tile.getSprites()[tile.spriteNum-1])
+                rect = image.get_rect()
+                #Get pixel coordinates (column/row * tileSize * SCALE)
+                rect.x, rect.y = tile.col * rect.width, tile.row * rect.height
+                #Draw the image to the screen
+                self.screen.screen.blit(image, rect)
+            except:
+                pass
+                #print("WARNING: Tile failed to load")
         for entity in self.entities:
-            entity.update()
+            try:
+                entity.update()
+            except:
+                print("WARNING: Entity failed to update")

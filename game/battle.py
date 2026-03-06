@@ -27,6 +27,7 @@ class Battle:
         """
         The main function responsible for game flow; checking if player quits and updating the map.
         """
+        self.tm.loadMap("start")
         #Define clock
         clock = pygame.time.Clock()
         while True:
