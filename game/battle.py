@@ -37,7 +37,7 @@ class Battle:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()
             #Refresh screen
-            self.window.fill(BLK)
+            #self.window.fill(BLK)
             #Draw map and player to the screen
             self.tm.drawMap()
             self.player1.updateSprite()

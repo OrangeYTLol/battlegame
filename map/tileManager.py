@@ -1,5 +1,6 @@
 from map.tile import Tile
 import yaml, importlib
+import concurrent.futures
 from threading import Thread
 
 class TileManager:
@@ -31,7 +32,7 @@ class TileManager:
         tiles.start() 
         tiles.join()
         entities.start()
-        entities.join()
+        #entities.join()
         
     def createTile(self, i):
         #Use the dictionary as a constructor for a tile object and load the images into the object
@@ -43,10 +44,9 @@ class TileManager:
     
     def loadTiles(self):
         #Loop through the tiles in the map
-        tiles = []
-        for i in range(len(self.tiles)):
-            tiles.append(Thread(target=self.createTile, args=[i]))
-            tiles[i].start()
+        tiles = range(len(self.tiles))
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(self.createTile, tiles)
         
     def loadEntities(self):
         self.entities = []
