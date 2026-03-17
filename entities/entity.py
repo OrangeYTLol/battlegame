@@ -15,7 +15,7 @@ class Entity:
     
     def checkCollision(self, rect: pygame.Rect):
         """
-        Return true if given rectangle collides with list of tiles with collision
+        Check if the given rectangle collides with the list of tiles with collision
         """
         return rect.collidelist(self.screen.tm.collision_group) != -1
 
@@ -26,4 +26,7 @@ class Entity:
         self.screen.screen.blit(self.image, self.rect)
     
     def update(self):
+        """
+        Generic update function meant to be overriden by child classes, draws the sprite to the screen on every frame 
+        """
         self.drawSprite()

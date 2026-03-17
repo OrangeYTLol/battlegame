@@ -22,39 +22,33 @@ class TileManager:
         Loads a map into memory
         """
         self.mapName = name
-        #Load map files
+        #Load map tiles, properties, and clear collision group
         self.tiles = open("./assets/maps/" + self.mapName + "/tiles.txt").read().split("\n") #Split the tiles.txt file into a list by line
         self.mapProperties = yaml.safe_load(open("./assets/maps/" + self.mapName + "/mapproperties.yaml", "r")) #Load map properties
         self.collision_group = []
-        
-        tiles = Thread(target=self.loadTiles)
-        entities = Thread(target=self.loadEntities)
-        tiles.start() 
-        tiles.join()
-        entities.start()
-        #entities.join()
-        
-    def createTile(self, i):
-        #Use the dictionary as a constructor for a tile object and load the images into the object
-        constructor = eval(self.tiles[i])
-        self.tiles[i] = Tile(constructor, "./assets/maps/" + self.mapName + "/tile.keys") if self.mapProperties["tileKeys"] else Tile(constructor)
-        #Add tile to collision list if collision attribute is set to true
-        if self.tiles[i].hasCollision:
-            self.collision_group.append(self.tiles[i].rect)
-    
-    def loadTiles(self):
-        #Loop through the tiles in the map
+
+        #Create a pool of threads to concurrently initialize every tile
         tiles = range(len(self.tiles))
         with concurrent.futures.ThreadPoolExecutor() as executor:
             executor.map(self.createTile, tiles)
-        
-    def loadEntities(self):
+        #loop through a list of entities and create an object for each one
         self.entities = []
         if len(self.mapProperties["entities"]):
             entities = importlib.import_module("assets.maps."+ self.mapName + ".mapentities")
             for entity in self.mapProperties["entities"]:
                 entity = getattr(entities, entity)
                 self.entities.append(entity(self.screen))
+        
+    def createTile(self, i):
+        """
+        Use a dictionary of tile attributes to construct a tile object and append tile to collision list if applicable
+        """
+        #Use the dictionary as a constructor for a tile object and load the images into the object
+        constructor = eval(self.tiles[i])
+        self.tiles[i] = Tile(constructor, "./assets/maps/" + self.mapName + "/tile.keys") if self.mapProperties["tileKeys"] else Tile(constructor)
+        #Add tile to collision list if collision attribute is set to true
+        if self.tiles[i].hasCollision:
+            self.collision_group.append(self.tiles[i].rect)
     
     def drawMap(self):
         """

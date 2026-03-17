@@ -33,7 +33,10 @@ class Player(Entity):
         self.spriteNum = 1 #Sprite index
         self.spriteTime = 7 #Time between sprite changes
     
-    def updateSprite(self):
+    def update(self):
+        """
+        Updates the player's position and sprite every frame
+        """
         keys = pygame.key.get_pressed() #List of booleans that represent keys pressed
         #Booleans for directional keys
         self.upPressed = keys[pygame.K_w] or keys[pygame.K_UP]
@@ -53,15 +56,17 @@ class Player(Entity):
         if self.rightPressed: 
             self.velocity.x += 1
             self.direction = "right"
-        #Increment spriteCounter if a direction key is pressed
+        #If a direction key is pressed, increment the sprite's local time
         if self.upPressed or self.leftPressed or self.downPressed or self.rightPressed:
             self.spriteCounter += 1
+            #If the sprite's local time matches the time when the sprite should update, change the sprite
             if self.spriteCounter > self.spriteTime:
-                if self.spriteNum == 1:
-                    self.spriteNum = 2
-                elif self.spriteNum == 2:
+                #If the sprite number is equal to the amount of sprites available, the sprite number gets reset; Else, the sprite number gets incremented by 1
+                if self.spriteNum < len(eval("self."+self.direction)):
+                    self.spriteNum += 1
+                else:
                     self.spriteNum = 1
-                self.spriteCounter = 0
+                self.spriteCounter = 1  
 
         #Move and draw player
         self.updatePos()
@@ -69,24 +74,26 @@ class Player(Entity):
         
     def updatePos(self):
         """
-        Employs a prediction-based algorithm based on user input that determines if the tile ahead is collidable.
-        If a tile has collision, stop the player from advancing to the tile. Else, the player moves as intended.
+        Use self.velocity to move the player if it doesn't result in a collision
         """
+        #Check for a collision on a full step in the x axis; If a collision is found, check for a collision in a half step
         if not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED, self.rect.top, self.rect.width, self.rect.height)):
             self.pos.x += self.velocity.x * self.SPEED
         elif not self.checkCollision(pygame.Rect(self.rect.left + self.velocity.x * self.SPEED * 0.5, self.rect.top, self.rect.width, self.rect.height)):
             self.pos.x += self.velocity.x * self.SPEED * 0.5
+        #Check for a collision on a full step in the y axis; If a collision is found, check for a collision in a half step
         if not self.checkCollision(pygame.Rect(self.rect.left, self.rect.top + self.velocity.y * self.SPEED, self.rect.width, self.rect.height)):
             self.pos.y += self.velocity.y * self.SPEED
         elif not self.checkCollision(pygame.Rect(self.rect.left, self.rect.top + self.velocity.y * self.SPEED * 0.5, self.rect.width, self.rect.height)):
             self.pos.y += self.velocity.y * self.SPEED * 0.5
-        self.rect.x, self.rect.y = self.pos.x, self.pos.y #Update player rectangle x and y to new pos
-        self.velocity.update(0, 0) #Reset velocity
+        self.rect.x, self.rect.y = self.pos.x, self.pos.y #Update player rectangle x and y to the new position
+        self.velocity.update(0, 0) #Reset velocity in the x and y axis
 
     def drawSprite(self):
         """
-        Draw an image based on direction and sprite index
+        Draw an image to the screen based on position and current sprite
         """
-        #Draw image based on direction and sprite index
+        #Update self.image based on direction and sprite number
         self.image = eval("self."+self.direction+str([self.spriteNum-1]))
+        #Draw the updated image to the screen with the player's updated coordinates
         self.screen.screen.blit(self.image, self.rect)

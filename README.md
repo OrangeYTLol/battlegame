@@ -4,3 +4,4 @@
 
 ## Dependencies:
 Pygame
+PyYAML
