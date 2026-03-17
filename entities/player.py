@@ -1,7 +1,7 @@
 import pygame
 from entities.entity import Entity
 
-class player(Entity):
+class Player(Entity):
     def __init__(self, screen):
         Entity.__init__(self, screen)
         #Attempt to load player sprites
