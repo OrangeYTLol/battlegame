@@ -8,6 +8,8 @@ import sys, pygame
 #Player and tile manager classes
 from entities.player import Player
 from map.tileManager import TileManager
+#For reading settings.yaml
+import yaml
 
 #Runner class for managing all of the game's functions
 class Runner:
@@ -16,9 +18,13 @@ class Runner:
         global FPS, BLK
         #Initialize Pygame
         pygame.init()
+        #Get global variables from settings.yaml
+        self.settings = yaml.safe_load(open("./settings.yaml"))
+        self.SCALE = self.settings["scale"] #Screen upscale amount
+        self.columns = self.settings["columns"]
+        self.rows = self.settings["rows"]
         #Create a TileManager object for map loading & drawing
         self.tm = TileManager(self)
-        self.SCALE = 5 #Screen upscale amount
         #Create screen where all the sprites get drawn to
         self.width = self.tm.columns * 16 * self.SCALE
         self.height = self.tm.rows * 16 * self.SCALE

@@ -8,8 +8,8 @@ class TileManager:
         #Screen object for drawing
         self.screen = screen
         #Amount of rows and columns on the screen
-        self.rows = 8
-        self.columns = 12
+        self.rows = self.screen.rows
+        self.columns = self.screen.columns
         #Define a list for tiles with collision
         self.collision_group = []
         self.tiles = []

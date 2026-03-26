@@ -1,8 +1,8 @@
-import pygame
+import pygame, yaml
 
 class SpriteProvider:
     def __init__(self):
-        self.SCALE = 5 #Scale constant
+        self.SCALE = yaml.safe_load(open("./settings.yaml"))["scale"] #Scale constant
     def getSprites(self, sprites: list):
         """
         Takes in a list with pygame.Rect constructors as args
