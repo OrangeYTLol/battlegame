@@ -1,7 +1,6 @@
 from map.tile import Tile
 import yaml, importlib
 import concurrent.futures
-from threading import Thread
 
 class TileManager:
     def __init__(self, screen):
