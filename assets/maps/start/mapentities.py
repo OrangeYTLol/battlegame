@@ -44,5 +44,10 @@ class downLevelTrigger(Trigger):
 
 class tilesetTest(Tileset):
     def __init__(self, screen):
-        tiles = {}
-        super().__init__("./assets/sprites/tiles/32xtileset.png", 7, tiles)
+        self.screen = screen
+        tiles = {
+            0: [],
+            1: [(0, 0, 16, 16)]
+        }
+        super().__init__("tiles/32xtileset", 7, tiles)
+        self.load_tiles("./assets/maps/start/tiles.csv")

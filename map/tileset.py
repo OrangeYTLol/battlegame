@@ -15,5 +15,11 @@ class Tileset:
         self.tiles[num] = self.sp.getSprites(frames)
 
     def load_tiles(self, file: str):
-        self.current_map = open(file).read().split(";")
-        print(self.current_map)
+        self.current_map = open(file).read().split("\n")
+        for i in range(len(self.current_map)):
+            self.current_map[i] = self.current_map[i].split(";")
+            while "" in self.current_map[i]:
+                self.current_map[i].remove("")
+    
+    def update(self):
+        pass
