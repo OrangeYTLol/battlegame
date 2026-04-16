@@ -1,4 +1,5 @@
 from entities.spriteProvider import SpriteProvider
+import yaml
 
 class Tileset:
     def __init__(self, img: str, anim_speed: int, tiles: dict = {}):
@@ -22,4 +23,16 @@ class Tileset:
                 self.current_map[i].remove("")
     
     def update(self):
-        pass
+        settings = yaml.safe_load(open("./settings.yaml"))
+        x = settings["cameraX"]
+        y = settings["cameraY"]
+        for i in range(0 + y, len(self.current_map)):
+            for j in range(0 + x, len(self.current_map[i])):
+                try:
+                    image = self.sp.scaleImage(self.tiles[int(self.current_map[i][j])][0])
+                    rect = image.get_rect()
+                    #Get pixel coordinates (column/row * tileSize * SCALE)
+                    rect.x, rect.y = (j - x) * rect.width, (i - y) * rect.height
+                    #Draw the image to the screen
+                    self.screen.screen.blit(image, rect)
+                except: pass

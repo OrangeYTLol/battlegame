@@ -27,9 +27,9 @@ class TileManager:
         self.collision_group = []
 
         #Create a pool of threads to concurrently initialize every tile
-        tiles = range(len(self.tiles))
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(self.createTile, tiles)
+        #tiles = range(len(self.tiles))
+        #with concurrent.futures.ThreadPoolExecutor() as executor:
+        #    executor.map(self.createTile, tiles)
         #loop through a list of entities and create an object for each one
         self.entities = []
         if len(self.mapProperties["entities"]):
@@ -68,7 +68,7 @@ class TileManager:
                 pass
                 #print("WARNING: Tile failed to load")
         for entity in self.entities:
-            try:
-                entity.update()
-            except:
-                print("WARNING: Entity failed to update")
+            #try:
+            entity.update()
+            #except:
+                #print("WARNING: Entity failed to update")
